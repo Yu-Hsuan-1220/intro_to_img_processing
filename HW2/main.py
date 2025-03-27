@@ -22,7 +22,7 @@ def get_reverse_map(img):
     cur_val = 0
     idx = 0
     for i in range(256): ## Find the value correspond to each Sk(0~255)
-        if equalized_map[i] > cur_val:
+        if equalized_map[i] > idx:
             while idx < equalized_map[i]:
                 result_map.append(cur_val)
                 idx += 1
@@ -49,9 +49,9 @@ cv2.imwrite('Q1_result.jpg', Q1_result)
 ## Part 2
 result_map = equalize_map(Q2_src)
 reversed_map = get_reverse_map(Q2_ref)
-
 h, w = Q2_src.shape
 Q2_result = np.zeros_like(Q2_src)
+
 for i in range(h):
     for j in range(w):
         Q2_result[i, j] = reversed_map[result_map[Q2_src[i, j]]]
