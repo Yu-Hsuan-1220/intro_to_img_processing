@@ -49,6 +49,7 @@ cv2.imwrite('Q1_result.jpg', Q1_result)
 ## Part 2
 result_map = equalize_map(Q2_src)
 reversed_map = get_reverse_map(Q2_ref)
+print(reversed_map)
 h, w = Q2_src.shape
 Q2_result = np.zeros_like(Q2_src)
 
@@ -57,3 +58,4 @@ for i in range(h):
         Q2_result[i, j] = reversed_map[result_map[Q2_src[i, j]]]
 
 cv2.imwrite('Q2_result.jpg', Q2_result)
+
