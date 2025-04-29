@@ -16,11 +16,6 @@ def convolve2d(image, kernel):
             output[i-pad_h, j-pad_w] = np.sum(tmp * kernel)
     return output
 
-def gaussian_kernel_2d(ksize, sigma):
-    ax = np.linspace(-(ksize // 2), ksize // 2, ksize)
-    xx, yy = np.meshgrid(ax, ax)
-    kernel = np.exp(-(xx**2 + yy**2) / (2 * sigma**2))
-    return kernel / np.sum(kernel)
 
 def part1(file):
     path = './HW3/test_picture/'
@@ -36,15 +31,14 @@ def part1(file):
     ])
     img = cv2.imread(os.path.join(path, file), cv2.IMREAD_GRAYSCALE)
     img = np.float32(img)
-    gaussian_kernel = gaussian_kernel_2d(3, 1)
-    img_blur = convolve2d(img, gaussian_kernel)
-    img_gray_sharpening = convolve2d(img_blur, laplacian_kernel)
+    
+    img_gray_sharpening = convolve2d(img, laplacian_kernel)
     img_gray_sharpening = img - img_gray_sharpening
     img_gray_sharpening = np.clip(img_gray_sharpening, 0, 255).astype(np.uint8)
     result_file = 'spatial_laplacian1_' + file
     cv2.imwrite(os.path.join('./HW3', result_file), img_gray_sharpening)
 
-    img_gray_sharpening = convolve2d(img_blur, laplacian_kernel2)
+    img_gray_sharpening = convolve2d(img, laplacian_kernel2)
     img_gray_sharpening = img - img_gray_sharpening
     img_gray_sharpening = np.clip(img_gray_sharpening, 0, 255).astype(np.uint8)
     result_file = 'spatial_laplacian2_' + file
@@ -84,7 +78,7 @@ def part2(k, file):
     result_file = 'laplacian_frequency_' + file
     cv2.imwrite(os.path.join('./HW3', result_file), sharpened_img)
 
-#part2(8e-6, 'woman.jpg')
-#part2(5e-6, 'taj.jpg')
+part2(8e-6, 'woman.jpg')
+part2(5e-6, 'taj.jpg')
 part1('woman.jpg')
 part1('taj.jpg')
