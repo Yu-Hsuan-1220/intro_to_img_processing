@@ -10,10 +10,12 @@ def convolve2d(image, kernel):
     pad_w = k_w // 2
     padded = np.pad(image, ((pad_h, pad_h), (pad_w, pad_w)), mode='reflect')
     output = np.zeros_like(image)
+
     for i in range(pad_h, pad_h + img_h):
         for j in range(pad_w, pad_w + img_w):
             tmp = padded[i - pad_h : i + pad_h + 1, j - pad_w : j + pad_w + 1]
             output[i-pad_h, j-pad_w] = np.sum(tmp * kernel)
+            
     return output
 
 
@@ -61,6 +63,7 @@ def part2(k, file):
     for u in range(row):
         for v in range(col):
             laplacian_filter[u, v] = -4 * np.pi**2 * ((u - crow) ** 2 + (v - ccol) ** 2)
+    laplacian_filter /= np.max(np.abs(laplacian_filter)) 
     # bit-wise multiplication in frequency domain
     f_laplacian = f * laplacian_filter
     # Perform inverse FFT
@@ -78,7 +81,7 @@ def part2(k, file):
     result_file = 'laplacian_frequency_' + file
     cv2.imwrite(os.path.join('./HW3', result_file), sharpened_img)
 
-part2(8e-6, 'woman.jpg')
-part2(5e-6, 'taj.jpg')
+part2(10, 'woman.jpg')
+part2(10, 'taj.jpg')
 part1('woman.jpg')
 part1('taj.jpg')
